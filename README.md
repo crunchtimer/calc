@@ -16,10 +16,18 @@
 - 処理を細かいメソッドにまとめて流用することでコードを短く書く
 
 ## この課題で新たに学習すること
+
+まずはテキストには書いていない4つのことを学びます。  
+
 - StackView
-- UIView tag
+[StackViewとは？]( https://qiita.com/kinopontas/items/d08f84dbb711c5acbe28)
+
 - privateメソッド
+[アクセス修飾子](https://qiita.com/hironytic/items/6cc68ca93b428ba9194e)
+
 - Actionアウトレットの複数化
+- UIView tag
+
 
 
 ## アプリ基本仕様
@@ -35,4 +43,31 @@
 - 計算結果はdouble型で保持し、十分な桁数で小数点計算ができること
 - 計算結果は3桁の数字で表現され、3桁ごとにカンマをつけること
 - 四則演算は通常の電卓のように繰り返し計算ができること  
+
+
+## ヒント
+
+### Actionボタンの共通化
+
+これまでボタンごとにアウトレットしてボタンタップ時のアクションメソッドを設定していましたが、アクションメソッドは共通化できます。
+どのボタンがタップされたかは、tagで判断します。
+
+### 数字の3桁表示について
+
+数値を文字に変換しても自動的に3桁表示（1,000など）にはなりません。  
+表示するには3桁表示用のフォーマットに変換する必要があります。
+
+```
+let data: Int = 1000
+var numString = "0"
+
+// 数字フォーマット
+let formatter = NumberFormatter()
+// 小数を指定
+formatter.numberStyle = .decimal
+
+// 3桁カンマ付き数字文字列を取得
+numString = formatter.string(from: data as NSNumber)!
+````
+
 
