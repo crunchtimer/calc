@@ -20,13 +20,13 @@ class ViewController: UIViewController {
         case minus = 12      // -
         case multi = 13      // ×
         case division = 14   // ÷
-        case equal = 15      // =
     }
     
     var num: Double = 0                 // 現在入力中の数値
     var preNum: Double = 0              // 計算前の数値
     var operation:Operation = .none;    //  + , - , × , ÷ , =
     var preTapButton: Int = 0           // 前回タップしたボタン
+    var decimal: Double = 1             // 少数入力（"."ドットタップ後）
     
     // 画面表示前に呼ばれるメソッド
     override func viewDidLoad() {
@@ -42,8 +42,19 @@ class ViewController: UIViewController {
     @IBAction func numbers(_ sender: UIButton) {
         // タップしたボタンを記録
         preTapButton = sender.tag
-        // ボタンが連続で入力されると1桁づつあげる
-        num = num * 10 + Double(sender.tag)
+        
+        // 通常入力
+        if decimal == 1 {
+            // ボタンが連続で入力されると1桁づつあげる
+            num = num * 10 + Double(sender.tag)
+        }
+        // 少数入力
+        else {
+            // ボタンが連続で入力されると1桁づつ下の数値を足す
+            num = num + Double(sender.tag) * decimal
+            decimal *= 0.1
+        }
+        
         // 表示
         self.display(data: self.num)
     }
@@ -52,6 +63,9 @@ class ViewController: UIViewController {
     /// + - × ÷ がタップされた時に呼ばれるメソッドです。
     /// どのボタンがタップされたかはtagを参照します（列挙型に紐づく）
     @IBAction func calc(_ sender: UIButton) {
+        
+        // 少数入力クリア
+        decimal = 1
         
         // 計算中かをチェック
         if self.operationCheck() {
@@ -75,9 +89,6 @@ class ViewController: UIViewController {
             // ÷
             case Operation.division.rawValue:
                 operation = .division
-            // ÷
-            case Operation.equal.rawValue:
-            operation = .equal
             default:
                 break
         }
@@ -91,10 +102,24 @@ class ViewController: UIViewController {
         preTapButton = sender.tag
     }
     
+    //
+    @IBAction func equalTap(_ sender: Any) {
+        
+        // 計算中かをチェック
+        if self.operationCheck() {
+            // 計算
+            self.calculation()
+            // 計算結果を表示
+            self.display(data: self.num)
+        }
+        operation = .none
+    }
+    
     // 小数点（ドット）タップ
     @IBAction func dot(_ sender: UIButton) {
         
-        // TODO: 時間がある人はやってみよう！
+        // 少数入力
+        decimal = 0.1
     }
     
     /// ACボタンタップ
@@ -106,6 +131,7 @@ class ViewController: UIViewController {
         preNum = 0
         operation = .none
         preTapButton = 0
+        decimal = 1
         // 表示
         self.display(data: self.num)
     }

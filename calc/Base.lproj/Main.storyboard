@@ -200,7 +200,7 @@
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="32"/>
                                                 <state key="normal" title="="/>
                                                 <connections>
-                                                    <action selector="calc:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dPj-GP-a3L"/>
+                                                    <action selector="equalTap:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gDc-70-8ww"/>
                                                 </connections>
                                             </button>
                                         </subviews>
